@@ -5,15 +5,6 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-/* char* splitcoma(char* categorias){
-    int cont = 0;
-    while(categorias[cont] != '\n'){
-        if (categorias[cont] == ','){
-    
-        }
-    }
-} */
-
 char* mainGenreGame(FILE *fp){
     char linea[100];
     int cont = 0;
@@ -42,13 +33,12 @@ void moveGame(FILE *fp, DIR *dr, char *gameName, char *genre){
         directoryExists = chdir(genre);
     }
     chdir(".."); // Vuelve al parent por si acaso
-    char* finalName = NULL;
-    // De aqui en adelante muere, tira segfault asi que strcpy no esta haciendo la pega
+
+    char finalName[256];
     strcpy(finalName, genre);
     strcat(finalName, "/");
     strcat(finalName, gameName);
-    int error = rename(gameName, finalName);
-    printf("%d\n", error);
+    rename(gameName, finalName);
     
 }
 
@@ -84,13 +74,12 @@ int main(void)
 
                 fp = fopen(juegoName, "r");
                 genre = mainGenreGame(fp);
+                moveGame(fp, dr, juegoName, genre);
                 fclose(fp);
-                //moveGame(fp, dr, juegoName, genre);
             }
     } 
   
     fp = fopen("amongas.txt", "r");
-    moveGame(fp, dr, "amongas.txt", "Terror");
     closedir(dr);     
     return 0; 
 } 
