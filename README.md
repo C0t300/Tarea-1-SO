@@ -2,7 +2,9 @@
 
 Hay que tener una carpeta llamada Juegos, que tenga txt adentros con el siguente formato:
 
-Amongas
-Terror, Roleplay, Multiplayer
-Innerslot
-Yo no fui, el juego , pero en el espacio.
+Amongas \n
+Terror, Roleplay, Multiplayer \n
+Innerslot \n
+Yo no fui, el juego , pero en el espacio. \n
+
+Inclui \n porque al parecer github no entiende saltos de linea
