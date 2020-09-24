@@ -125,7 +125,7 @@ int nGames(DIR *dr){
     return amount;
 }
 
-char** gameNamesArray(DIR *dr, int nGames){ // Esto esta malo
+char** gameNamesArray(DIR *dr, int nGames){ // Esto entrega mal algunos nombres.
     
     char* juegoName;
     struct dirent *de;
@@ -134,8 +134,10 @@ char** gameNamesArray(DIR *dr, int nGames){ // Esto esta malo
     char** arrayNames = malloc(sizeof(char*) * nGames);
     while ((de = readdir(dr)) != NULL){
             if(de->d_type == DT_REG){
-                juegoName = de->d_name;
-                juegoName = strtok(juegoName, ".txt");
+                juegoName = de->d_name; // Efectivamente los entrega con .txt
+                //printf("antes: %s\n", juegoName);
+                juegoName = strtok(juegoName, "."); // Y esto pareciera sobre matar los .txt, comiendose parte del nombre del archivo.
+                //printf("despues: %s\n", juegoName);
                 jName = malloc(sizeof(char) * 256); // FREE
                 strcpy(jName, juegoName);
                 arrayNames[i] = jName;
@@ -183,7 +185,6 @@ char** juegosOrdenados(char** nombres, int* generos, int cantJuegos){
     
     int cont = maximo;
     int indice = 0;
-    // Bien las variables hasta aca
     
     while(cont >= 0){
         
@@ -206,9 +207,9 @@ void showGenre(char* genre){
     chdir(genre);
     DIR *dr = opendir("."); 
     int nJuegos = nGames(dr);
-    char** gameNames = gameNamesArray(dr, nJuegos); // Aca bien
-    int* cantJuegosArray = nGenreGameArray(dr, nJuegos); // aca bien
-    char** orderedGames = juegosOrdenados(gameNames, cantJuegosArray, nJuegos); // aca mal :c
+    char** gameNames = gameNamesArray(dr, nJuegos); 
+    int* cantJuegosArray = nGenreGameArray(dr, nJuegos); 
+    char** orderedGames = juegosOrdenados(gameNames, cantJuegosArray, nJuegos); 
     freeArrayStrings(gameNames, nJuegos);
     free(cantJuegosArray);
 
@@ -220,6 +221,7 @@ void showGenre(char* genre){
     
 
     chdir(".."); //Vuelve al parent
+    freeArrayStrings(orderedGames, nJuegos);
 }
 
 void runConsole(DIR *dr, int cantGenres){
@@ -250,7 +252,7 @@ void runConsole(DIR *dr, int cantGenres){
             printf("Input incorrecto.\n");
         }
         else{
-            showGenre(arrayGenres[input-1]); // Aca bien
+            showGenre(arrayGenres[input-1]); 
         }
 
         
