@@ -1,5 +1,7 @@
 # Tarea-1-SO
 
+EDIT: Inclui la carpeta juegos con unos ejemplos.
+
 Hay que tener una carpeta llamada Juegos, que tenga txt adentros con el siguente formato:
 
 Amongas \n
