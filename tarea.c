@@ -203,6 +203,41 @@ char** juegosOrdenados(char** nombres, int* generos, int cantJuegos){
     
 }
 
+void printGame(FILE* fp){
+    char linea[100];
+    int cont;
+    cont = 0;
+    while (fgets(linea,100,fp) != NULL){
+        if (cont == 0){
+            printf("Nombre: %s", linea);
+        }
+        else if (cont == 1){
+            printf("Generos: %s", linea);
+        }
+        else if (cont == 2){
+            printf("Empresa: %s", linea);
+        }
+        else{
+            printf("Resumen: %s", linea);
+        }
+        cont+=1;
+    }
+    printf("\n");
+    printf("- - -\n");
+    
+}
+
+void showGame(char** orderedGames, int game){
+
+    char buffer[256];
+    strcpy(buffer, orderedGames[game]);
+    strcat(buffer, ".txt");
+
+    FILE* fp = fopen(buffer, "r");
+    printGame(fp);
+
+}
+
 void showGenre(char* genre){
     chdir(genre);
     DIR *dr = opendir("."); 
@@ -215,7 +250,23 @@ void showGenre(char* genre){
 
     int i;
     for(i = 0; i< nJuegos; i++){
-        printf("%d - %s\n", i+1, orderedGames[i]);
+        printf("%d.- %s\n", i+1, orderedGames[i]);
+    }
+    printf("0.- Volver\n");
+    printf("- - -\n");
+
+    int input;
+    scanf("%d", &input);
+    if(input != 0){
+        if((input > nJuegos) | (input < 0)){
+            printf("Input invalido.\n");
+        }
+        else{
+            showGame(orderedGames, input-1);
+        }
+    }
+    else{
+        printf("Volviendo.\n");
     }
 
     
@@ -240,9 +291,10 @@ void runConsole(DIR *dr, int cantGenres){
         }
         printf("0.- Salir\n");
         scanf("%d", &input);
+        printf("- - -\n");
 
         if(input == 0){
-            printf("Saliendo,\n");
+            printf("Saliendo\n");
             break;
         }
         else if(input > cantGenres){
@@ -305,7 +357,6 @@ int main(void) {
 
     rewinddir(dr); // Resetea el punteo dir
 
-    
     runConsole(dr, cantGenres);
 
 
